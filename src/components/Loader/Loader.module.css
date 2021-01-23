@@ -1,0 +1,7 @@
+.Loader {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    /* z-index: 100; */
+    /* color: #39d312; */
+}
