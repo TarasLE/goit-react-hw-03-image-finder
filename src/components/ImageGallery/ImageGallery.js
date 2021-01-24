@@ -7,7 +7,7 @@ ImageGallery.propTypes = {
     // onSubmit: PropTypes.func.isRequired,
 }
 
-export default function ImageGallery({ searchData }) {
+export default function ImageGallery({ searchData, onIMGclick }) {
     return (
         <ul className={styles.ImageGallery}>
             {searchData.map((elem) => (
@@ -16,6 +16,7 @@ export default function ImageGallery({ searchData }) {
                     id={elem.id}
                     webformatURL={elem.webformatURL}
                     largeImageURL={elem.largeImageURL}
+                    onIMGclick={onIMGclick}
                 />
             ))}
         </ul>

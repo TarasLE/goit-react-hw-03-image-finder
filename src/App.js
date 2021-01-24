@@ -5,6 +5,7 @@ import Searchbar from './components/Searchbar/Searchbar'
 import ImageGallery from './components/ImageGallery/ImageGallery'
 import Loader from './components/Loader/Loader'
 import Button from './components/Button/Button'
+import Modal from './components/Modal/Modal'
 
 export default class App extends Component {
     state = {
@@ -12,11 +13,28 @@ export default class App extends Component {
         status: 'idle',
         page: 1,
         currentSearch: '',
+        showModal: false,
+        chosenIMG: '',
     }
 
     apiConfig = {
         API_KEY: '19125806-9a56a48a4edb0ea3b4b1e3bdb',
         BASE_URL: 'https://pixabay.com/api/',
+    }
+
+    toggleModal = (event) => {
+        // this.setState({ chosenIMG: event.target.dataset.source })
+        this.setState(({ showModal }) => ({ showModal: !showModal }))
+
+        // this.setState(({ showModal }) => ({ showModal: !showModal }))
+
+        // event.preventDefault()
+        // console.log(event.target.dataset.source)
+    }
+
+    chosenIMG = (event) => {
+        this.setState({ chosenIMG: event.target.dataset.source })
+        this.toggleModal()
     }
 
     toSearch = (elementToSearch) => {
@@ -77,6 +95,12 @@ export default class App extends Component {
     //                   }))
     //         })
     // }
+    windowScroll = () => {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+        })
+    }
 
     loadMore = (event) => {
         event.preventDefault()
@@ -95,7 +119,7 @@ export default class App extends Component {
         if (this.state.page !== prevState.page) {
             // this.toSearch(this.state.currentSearch)
             this.fetchElements()
-            console.log('FROM DID UPDATE')
+            // console.log('FROM DID UPDATE')
         } else if (this.state.currentSearch !== prevState.currentSearch) {
             // this.state.SearchData = null
             // console.log('RESET')
@@ -103,10 +127,7 @@ export default class App extends Component {
             this.fetchElements()
         }
         // const scrollrevers = imageContainer.clientHeight(this.state.page - 1)
-        window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: 'smooth',
-        })
+        this.windowScroll()
     }
 
     resetState = () => {
@@ -119,6 +140,7 @@ export default class App extends Component {
     }
 
     render() {
+        // console.log(this.state.chosenIMG)
         // console.log('FROM RENDER')
         // console.log(this.state.status)
         // console.log(this.state.SearchData)
@@ -132,7 +154,10 @@ export default class App extends Component {
                 <Searchbar onSubmit={this.toSearch} />
                 {this.state.SearchData && (
                     <div>
-                        <ImageGallery searchData={this.state.SearchData} />
+                        <ImageGallery
+                            searchData={this.state.SearchData}
+                            onIMGclick={this.chosenIMG}
+                        />
                         {this.state.status === 'idle' && (
                             <Button
                                 loadMore={this.loadMore}
@@ -140,6 +165,12 @@ export default class App extends Component {
                             />
                         )}
                     </div>
+                )}
+                {this.state.showModal && (
+                    <Modal
+                        chosenIMG={this.state.chosenIMG}
+                        closeModal={this.toggleModal}
+                    />
                 )}
             </div>
         )

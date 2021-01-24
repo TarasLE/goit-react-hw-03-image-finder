@@ -6,9 +6,14 @@ ImageGalleryItem.propTypes = {
     // onSubmit: PropTypes.func.isRequired,
 }
 
-export default function ImageGalleryItem({ id, webformatURL, largeImageURL }) {
+export default function ImageGalleryItem({
+    id,
+    webformatURL,
+    largeImageURL,
+    onIMGclick,
+}) {
     return (
-        <li className={styles.ImageGalleryItem} key={id}>
+        <li className={styles.ImageGalleryItem} key={id} onClick={onIMGclick}>
             <img
                 src={webformatURL}
                 data-source={largeImageURL}
