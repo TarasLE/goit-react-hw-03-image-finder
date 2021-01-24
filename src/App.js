@@ -31,6 +31,7 @@ export default class App extends Component {
 
     fetchElements = () => {
         // this.setState({ status: 'pending' })
+        // setTimeout(() => {
         fetch(
             `${this.apiConfig.BASE_URL}?key=${this.apiConfig.API_KEY}&q=${this.state.currentSearch}&page=${this.state.page}&per_page=12`
         )
@@ -49,6 +50,7 @@ export default class App extends Component {
                           status: 'idle',
                       }))
             })
+        // }, 2000)
     }
 
     // toSearch = (elementToSearch) => {
@@ -122,17 +124,21 @@ export default class App extends Component {
         // console.log(this.state.SearchData)
         return (
             <div className={styles.App}>
-                {this.state.status === 'pending' && <Loader />}
+                {/* {this.state.status === 'pending' && <Loader />} */}
+                {/* {this.state.status === 'pending' && this.state.page === 1 && ( */}
+                {this.state.status === 'pending' && (
+                    <Loader pageState={this.state.page} />
+                )}
                 <Searchbar onSubmit={this.toSearch} />
                 {this.state.SearchData && (
                     <div>
                         <ImageGallery searchData={this.state.SearchData} />
-                        <div className={styles.ButtonContainer}>
+                        {this.state.status === 'idle' && (
                             <Button
                                 loadMore={this.loadMore}
-                                className={styles.Test}
+                                // className={styles.Test}
                             />
-                        </div>
+                        )}
                     </div>
                 )}
             </div>
