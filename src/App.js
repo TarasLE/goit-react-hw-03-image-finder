@@ -42,24 +42,26 @@ export default class App extends Component {
     }
 
     fetchElements = () => {
-        fetch(
-            `${this.apiConfig.BASE_URL}?key=${this.apiConfig.API_KEY}&q=${this.state.currentSearch}&page=${this.state.page}&per_page=12`
-        )
-            .then((res) => res.json())
-            .then((SearchData) => {
-                this.state.SearchData === null
-                    ? this.setState({
-                          SearchData: SearchData.hits,
-                          status: 'idle',
-                      })
-                    : this.setState((prevState) => ({
-                          SearchData: [
-                              ...prevState.SearchData,
-                              ...SearchData.hits,
-                          ],
-                          status: 'idle',
-                      }))
-            })
+        setTimeout(() => {
+            fetch(
+                `${this.apiConfig.BASE_URL}?key=${this.apiConfig.API_KEY}&q=${this.state.currentSearch}&page=${this.state.page}&per_page=12`
+            )
+                .then((res) => res.json())
+                .then((SearchData) => {
+                    this.state.SearchData === null
+                        ? this.setState({
+                              SearchData: SearchData.hits,
+                              status: 'idle',
+                          })
+                        : this.setState((prevState) => ({
+                              SearchData: [
+                                  ...prevState.SearchData,
+                                  ...SearchData.hits,
+                              ],
+                              status: 'idle',
+                          }))
+                })
+        }, 2000)
     }
 
     windowScroll = () => {
@@ -99,10 +101,8 @@ export default class App extends Component {
     render() {
         return (
             <div className={styles.App}>
-                {this.state.status === 'pending' && (
-                    <Loader pageState={this.state.page} />
-                )}
                 <Searchbar onSubmit={this.searchRequest} />
+                {this.state.status === 'pending' && <Loader />}
                 {this.state.SearchData && (
                     <div>
                         <ImageGallery
@@ -119,6 +119,9 @@ export default class App extends Component {
                         chosenIMG={this.state.chosenIMG}
                         closeModal={this.toggleModal}
                     />
+                )}
+                {this.state.status === 'pending' && this.state.page !== 1 && (
+                    <Loader />
                 )}
             </div>
         )
