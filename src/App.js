@@ -13,28 +13,34 @@ export default class App extends Component {
         page: 1,
         currentSearch: '',
     }
-    // apiConfig={
-    // API_KEY: '19125806-9a56a48a4edb0ea3b4b1e3bdb'
-    // }
+
+    apiConfig = {
+        API_KEY: '19125806-9a56a48a4edb0ea3b4b1e3bdb',
+        BASE_URL: 'https://pixabay.com/api/',
+    }
+
     toSearch = (elementToSearch) => {
-        this.setState({ status: 'pending', currentSearch: elementToSearch })
-        // console.log('FROM_APP_TO_SERCH')
-        // console.log(elementToSearch)
-        // console.log('FROM_ONSEARCH_FUNCTION')
-        const API_KEY = '19125806-9a56a48a4edb0ea3b4b1e3bdb'
-        const currentPage = this.state.page
-        console.log(`Current page is: ${currentPage}`)
-        // setTimeout(() => {
+        if (this.state.currentSearch === elementToSearch) {
+            return
+        } else {
+            this.resetState()
+            this.setState({ status: 'pending' })
+            this.setState({ currentSearch: elementToSearch })
+        }
+    }
+
+    fetchElements = () => {
+        // this.setState({ status: 'pending' })
         fetch(
-            `https://pixabay.com/api/?key=${API_KEY}&q=${elementToSearch}&page=${this.state.page}&per_page=12`
+            `${this.apiConfig.BASE_URL}?key=${this.apiConfig.API_KEY}&q=${this.state.currentSearch}&page=${this.state.page}&per_page=12`
         )
             .then((res) => res.json())
             .then((SearchData) => {
                 this.state.SearchData === null
-                    ? this.setState((prevState) => ({
+                    ? this.setState({
                           SearchData: SearchData.hits,
                           status: 'idle',
-                      }))
+                      })
                     : this.setState((prevState) => ({
                           SearchData: [
                               ...prevState.SearchData,
@@ -43,54 +49,76 @@ export default class App extends Component {
                           status: 'idle',
                       }))
             })
-        // }, 2000)
-
-        // console.log(this.state.SearchData)
-        // this.setState({ status: 'idle' })
     }
+
+    // toSearch = (elementToSearch) => {
+    //     this.setState({ status: 'pending', currentSearch: elementToSearch })
+    //     const API_KEY = '19125806-9a56a48a4edb0ea3b4b1e3bdb'
+    //     const currentPage = this.state.page
+    //     console.log(`Current page is: ${currentPage}`)
+    //     fetch(
+    //         `https://pixabay.com/api/?key=${API_KEY}&q=${elementToSearch}&page=${this.state.page}&per_page=12`
+    //     )
+    //         .then((res) => res.json())
+    //         .then((SearchData) => {
+    //             this.state.SearchData === null
+    //                 ? this.setState((prevState) => ({
+    //                       SearchData: SearchData.hits,
+    //                       status: 'idle',
+    //                   }))
+    //                 : this.setState((prevState) => ({
+    //                       SearchData: [
+    //                           ...prevState.SearchData,
+    //                           ...SearchData.hits,
+    //                       ],
+    //                       status: 'idle',
+    //                   }))
+    //         })
+    // }
 
     loadMore = (event) => {
-        // event.preventDefault()
+        event.preventDefault()
         this.setState((prevState) => ({
             page: prevState.page + 1,
+            status: 'pending',
         }))
-        // console.log(this.state.page)
-        // this.toSearch(this.state.currentSearch)
-        // this.setState({ page: +1 })
-        // window.scrollTo({
-        //     top: document.documentElement.scrollHeight,
-        //     behavior: 'smooth',
-        // })
-        // console.log('OnLoadMore')
     }
 
-    windowScroll = () => {
+    componentDidMount() {}
+
+    componentDidUpdate(prevProps, prevState) {
+        // if (this.state.currentSearch) {
+        //     this.fetchElements()
+        // }
+        if (this.state.page !== prevState.page) {
+            // this.toSearch(this.state.currentSearch)
+            this.fetchElements()
+            console.log('FROM DID UPDATE')
+        } else if (this.state.currentSearch !== prevState.currentSearch) {
+            // this.state.SearchData = null
+            // console.log('RESET')
+            this.resetState()
+            this.fetchElements()
+        }
+        // const scrollrevers = imageContainer.clientHeight(this.state.page - 1)
         window.scrollTo({
             top: document.documentElement.scrollHeight,
             behavior: 'smooth',
         })
     }
-    componentDidMount() {
-        // const API_KEY = '19125806-9a56a48a4edb0ea3b4b1e3bdb'
-        // console.log('FROM_COMPONENT_DID_MOUNT')
-        // fetch(`https://pixabay.com/api/?key=${API_KEY}&q`)
-        //     .then((res) => res.json())
-        //     .then(console.log)
-    }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.page !== prevState.page) {
-            this.toSearch(this.state.currentSearch)
-        }
-        window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: 'smooth',
+    resetState = () => {
+        this.setState({
+            SearchData: null,
+            page: 1,
+            // currentSearch: '',
+            // status: 'idle',
         })
     }
 
     render() {
-        console.log('FROM RENDER')
-        console.log(this.state.status)
+        // console.log('FROM RENDER')
+        // console.log(this.state.status)
         // console.log(this.state.SearchData)
         return (
             <div className={styles.App}>
@@ -100,7 +128,10 @@ export default class App extends Component {
                     <div>
                         <ImageGallery searchData={this.state.SearchData} />
                         <div className={styles.ButtonContainer}>
-                            <Button loadMore={this.loadMore} />
+                            <Button
+                                loadMore={this.loadMore}
+                                className={styles.Test}
+                            />
                         </div>
                     </div>
                 )}
