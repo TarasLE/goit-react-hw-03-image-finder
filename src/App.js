@@ -61,7 +61,7 @@ export default class App extends Component {
                               status: 'idle',
                           }))
                 })
-        }, 2000)
+        }, 500)
     }
 
     windowScroll = () => {
@@ -79,16 +79,15 @@ export default class App extends Component {
         }))
     }
 
-    componentDidMount() {}
-
     componentDidUpdate(prevProps, prevState) {
         if (this.state.page !== prevState.page) {
             this.fetchElements()
         } else if (this.state.currentSearch !== prevState.currentSearch) {
             this.resetState()
             this.fetchElements()
+        } else if (this.state.page >= 2) {
+            this.windowScroll()
         }
-        this.windowScroll()
     }
 
     resetState = () => {
