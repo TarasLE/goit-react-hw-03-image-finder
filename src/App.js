@@ -23,13 +23,7 @@ export default class App extends Component {
     }
 
     toggleModal = (event) => {
-        // this.setState({ chosenIMG: event.target.dataset.source })
         this.setState(({ showModal }) => ({ showModal: !showModal }))
-
-        // this.setState(({ showModal }) => ({ showModal: !showModal }))
-
-        // event.preventDefault()
-        // console.log(event.target.dataset.source)
     }
 
     chosenIMG = (event) => {
@@ -37,7 +31,7 @@ export default class App extends Component {
         this.toggleModal()
     }
 
-    toSearch = (elementToSearch) => {
+    searchRequest = (elementToSearch) => {
         if (this.state.currentSearch === elementToSearch) {
             return
         } else {
@@ -48,8 +42,6 @@ export default class App extends Component {
     }
 
     fetchElements = () => {
-        // this.setState({ status: 'pending' })
-        // setTimeout(() => {
         fetch(
             `${this.apiConfig.BASE_URL}?key=${this.apiConfig.API_KEY}&q=${this.state.currentSearch}&page=${this.state.page}&per_page=12`
         )
@@ -68,33 +60,8 @@ export default class App extends Component {
                           status: 'idle',
                       }))
             })
-        // }, 2000)
     }
 
-    // toSearch = (elementToSearch) => {
-    //     this.setState({ status: 'pending', currentSearch: elementToSearch })
-    //     const API_KEY = '19125806-9a56a48a4edb0ea3b4b1e3bdb'
-    //     const currentPage = this.state.page
-    //     console.log(`Current page is: ${currentPage}`)
-    //     fetch(
-    //         `https://pixabay.com/api/?key=${API_KEY}&q=${elementToSearch}&page=${this.state.page}&per_page=12`
-    //     )
-    //         .then((res) => res.json())
-    //         .then((SearchData) => {
-    //             this.state.SearchData === null
-    //                 ? this.setState((prevState) => ({
-    //                       SearchData: SearchData.hits,
-    //                       status: 'idle',
-    //                   }))
-    //                 : this.setState((prevState) => ({
-    //                       SearchData: [
-    //                           ...prevState.SearchData,
-    //                           ...SearchData.hits,
-    //                       ],
-    //                       status: 'idle',
-    //                   }))
-    //         })
-    // }
     windowScroll = () => {
         window.scrollTo({
             top: document.documentElement.scrollHeight,
@@ -113,20 +80,12 @@ export default class App extends Component {
     componentDidMount() {}
 
     componentDidUpdate(prevProps, prevState) {
-        // if (this.state.currentSearch) {
-        //     this.fetchElements()
-        // }
         if (this.state.page !== prevState.page) {
-            // this.toSearch(this.state.currentSearch)
             this.fetchElements()
-            // console.log('FROM DID UPDATE')
         } else if (this.state.currentSearch !== prevState.currentSearch) {
-            // this.state.SearchData = null
-            // console.log('RESET')
             this.resetState()
             this.fetchElements()
         }
-        // const scrollrevers = imageContainer.clientHeight(this.state.page - 1)
         this.windowScroll()
     }
 
@@ -134,24 +93,16 @@ export default class App extends Component {
         this.setState({
             SearchData: null,
             page: 1,
-            // currentSearch: '',
-            // status: 'idle',
         })
     }
 
     render() {
-        // console.log(this.state.chosenIMG)
-        // console.log('FROM RENDER')
-        // console.log(this.state.status)
-        // console.log(this.state.SearchData)
         return (
             <div className={styles.App}>
-                {/* {this.state.status === 'pending' && <Loader />} */}
-                {/* {this.state.status === 'pending' && this.state.page === 1 && ( */}
                 {this.state.status === 'pending' && (
                     <Loader pageState={this.state.page} />
                 )}
-                <Searchbar onSubmit={this.toSearch} />
+                <Searchbar onSubmit={this.searchRequest} />
                 {this.state.SearchData && (
                     <div>
                         <ImageGallery
@@ -159,10 +110,7 @@ export default class App extends Component {
                             onIMGclick={this.chosenIMG}
                         />
                         {this.state.status === 'idle' && (
-                            <Button
-                                loadMore={this.loadMore}
-                                // className={styles.Test}
-                            />
+                            <Button loadMore={this.loadMore} />
                         )}
                     </div>
                 )}

@@ -1,6 +1,4 @@
 .Button {
-    /* display: flex; */
-    /* margin: 50%; */
     margin-top: 20px;
     margin-right: auto;
     margin-left: auto;
@@ -30,8 +28,5 @@
 }
 
 .ButtonContainer {
-    /* color: red; */
     margin-left: 45%;
-    /* margin-left: auto;
-    margin-right: auto; */
 }

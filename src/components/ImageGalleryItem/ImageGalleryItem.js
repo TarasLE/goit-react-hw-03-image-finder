@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 import styles from './ImageGalleryItem.module.css'
 
 ImageGalleryItem.propTypes = {
-    // onSubmit: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+    onIMGclick: PropTypes.func.isRequired,
 }
 
 export default function ImageGalleryItem({

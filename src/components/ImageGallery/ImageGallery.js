@@ -4,7 +4,8 @@ import styles from './ImageGallery.module.css'
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem'
 
 ImageGallery.propTypes = {
-    // onSubmit: PropTypes.func.isRequired,
+    searchData: PropTypes.string.isRequired,
+    onIMGclick: PropTypes.func.isRequired,
 }
 
 export default function ImageGallery({ searchData, onIMGclick }) {

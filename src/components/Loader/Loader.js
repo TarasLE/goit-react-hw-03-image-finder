@@ -4,7 +4,6 @@ import Spinner from 'react-loader-spinner'
 import styles from './Loader.module.css'
 
 export default class Loader extends Component {
-    // static defaultProps = { styles: styles.Loader }
     render() {
         return (
             <div>

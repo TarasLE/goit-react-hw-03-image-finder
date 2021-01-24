@@ -27,11 +27,7 @@ export default class Modal extends Component {
         return (
             <div className={styles.Overlay} onClick={this.handleOverlayClick}>
                 <div className={styles.Modal}>
-                    <img
-                        // src="https://cdn.pixabay.com/user/2015/12/16/17-56-55-832_250x250.jpg"
-                        src={this.props.chosenIMG}
-                        alt=""
-                    />
+                    <img src={this.props.chosenIMG} alt="" />
                 </div>
             </div>
         )

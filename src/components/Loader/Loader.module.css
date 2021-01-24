@@ -2,14 +2,10 @@
     position: fixed;
     top: 100px;
     left: 50%;
-    /* z-index: 100; */
-    /* color: #39d312; */
 }
 
 .LoaderButton {
     position: fixed;
     bottom: 20px;
     left: 45%;
-    /* z-index: 100; */
-    /* color: #39d312; */
 }

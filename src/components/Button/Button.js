@@ -2,7 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './Button.module.css'
 
-Button.propTypes = {}
+Button.propTypes = {
+    loadMore: PropTypes.func.isRequired,
+}
 
 export default function Button({ loadMore }) {
     return (

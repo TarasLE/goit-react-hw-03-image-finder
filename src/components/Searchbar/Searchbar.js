@@ -10,29 +10,18 @@ export default class Searchbar extends Component {
     handleInput = (event) => {
         event.preventDefault()
         this.setState({ searchName: event.currentTarget.value })
-
-        // console.log(this.state.searchName)
     }
 
     handleSubmit = (event) => {
         const currentInput = this.state.searchName.trim()
         if (currentInput) {
             event.preventDefault()
-
-            // console.log(event)
-            // console.log(this.state.searchName)
             this.props.onSubmit(this.state.searchName)
         } else {
             event.preventDefault()
             return
         }
-        // this.clearInput()
     }
-
-    // clearInput = () => {
-    //     this.setState({ searchName: '' })
-    // }
-    // componentDidUpdate(prevProps, prevState) {}
 
     render() {
         return (
