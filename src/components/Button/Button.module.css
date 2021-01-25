@@ -28,5 +28,5 @@
 }
 
 .ButtonContainer {
-    margin-left: 45%;
+    display: flex;
 }
